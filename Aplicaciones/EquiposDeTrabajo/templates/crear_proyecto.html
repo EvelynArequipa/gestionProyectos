@@ -1,0 +1,49 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Crear Proyecto</h1>
+    <form action="{% url 'crear_proyecto' %}" method="post">
+        {% csrf_token %}
+        
+        <!-- Campo: Nombre -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Proyecto:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+
+        <!-- Campo: Descripción -->
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción:</label>
+            <textarea id="descripcion" name="descripcion" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <!-- Campo: Fecha de Inicio -->
+        <div class="mb-3">
+            <label for="fecha_inicio" class="form-label">Fecha de Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" required>
+        </div>
+
+        <!-- Campo: Fecha de Fin -->
+        <div class="mb-3">
+            <label for="fecha_fin" class="form-label">Fecha de Fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" required>
+        </div>
+
+        <!-- Campo: Responsable -->
+        <div class="mb-3">
+            <label for="encargado" class="form-label">Responsable:</label>
+            <select id="encargado_nombre" name="encargado_nombre" class="form-select">
+                <option value="" disabled selected>Selecciona un responsable</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.nombre }} {{ usuario.apellido }}">{{ usuario.nombre }} {{ usuario.apellido }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Botón: Guardar -->
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'listar_proyectos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

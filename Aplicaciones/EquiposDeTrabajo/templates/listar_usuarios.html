@@ -1,0 +1,45 @@
+{% extends './plantilla.html' %}
+
+{% block title %}Lista de Usuarios{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Usuarios</h1>
+<a href="{% url 'crear_usuario' %}" class="btn btn-success mb-3">Crear Usuario</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Descripcion</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.descripcion }}</td>
+            <td>{{ usuario.activo }}</td>
+            <td>
+                <div class="d-block mb-2">
+                    <a href="{% url 'editar_usuario' usuario.id %}" class="btn btn-warning btn-sm">Editar</a>
+                </div>
+                <div class="d-block">
+                    <a href="{% url 'eliminar_usuario' usuario.id %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este usuario?')">Eliminar</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center">No hay usuarios disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

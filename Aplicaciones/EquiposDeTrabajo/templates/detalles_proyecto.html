@@ -1,0 +1,54 @@
+{% extends './plantilla.html' %}
+
+{% block title %}Detalles del Proyecto{% endblock %}
+<div>
+
+{% block content %}
+<h1>{{ proyecto.nombre }}</h1>
+<p><strong>Descripción:</strong> {{ proyecto.descripcion }}</p>
+<p><strong>Fecha Límite:</strong> {{ proyecto.fecha_fin }}</p>
+
+<h2>Tareas</h2>
+<div class="d-flex justify-content-between mb-3">
+    <a href="{% url 'crear_tarea' proyecto.id %}" class="btn btn-primary">Añadir Tarea</a>
+    <a href="{% url 'listar_proyectos' %}" class="btn btn-primary">Regresar</a>
+</div>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Tarea</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tarea in proyecto.tareas.all %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ tarea.nombre }}</td>
+            <td>
+                {% if tarea.estado == 'pendiente' %}
+                    <span class="badge bg-warning">Pendiente</span>
+                {% elif tarea.estado == 'progreso' %}
+                    <span class="badge bg-primary">En progreso</span>
+                {% elif tarea.estado == 'completada' %}
+                    <span class="badge bg-success">Completada</span>
+                {% else %}
+                    <span class="badge bg-secondary">Desconocido</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'actualizar_tarea' tarea.id %}" class="btn btn-success btn-sm">Actualizar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">No hay tareas asignadas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

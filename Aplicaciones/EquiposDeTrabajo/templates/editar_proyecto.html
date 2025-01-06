@@ -1,0 +1,59 @@
+{% extends './plantilla.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Editar Proyecto</h2>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="{% url 'editar_proyecto' proyecto.id %}" method="post">
+                {% csrf_token %}
+
+                <!-- Campo Nombre -->
+                <div class="mb-3">
+                    <label for="nombre" class="form-label"><b>Nombre del Proyecto:</b></label>
+                    <input type="text" name="nombre" id="nombre" class="form-control" 
+                           value="{{ proyecto.nombre }}" placeholder="Ingrese el nombre del proyecto" required>
+                </div>
+
+                <!-- Campo Descripción -->
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label"><b>Descripción:</b></label>
+                    <textarea name="descripcion" id="descripcion" class="form-control" rows="4" placeholder="Ingrese la descripción">{{ proyecto.descripcion }}</textarea>
+                </div>
+
+                <!-- Campo Fecha Inicio -->
+                <div class="mb-3">
+                    <label for="fecha_inicio" class="form-label"><b>Fecha de Inicio:</b></label>
+                    <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" value="{{ proyecto.fecha_inicio|date:'Y-m-d' }}" required>
+                </div>
+
+                <!-- Campo Fecha Fin -->
+                <div class="mb-3">
+                    <label for="fecha_fin" class="form-label"><b>Fecha de Fin:</b></label>
+                    <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" value="{{ proyecto.fecha_fin|date:'Y-m-d' }}" required>
+                </div>
+
+                <!-- Campo Responsable -->
+                <div class="mb-3">
+                    <label for="encargado_nombre" class="form-label"><b>Responsable:</b></label>
+                    <select id="encargado_nombre" name="encargado_nombre" class="form-select" required>
+                        <option value="" disabled selected>Selecciona un responsable</option>
+                        {% for usuario in usuarios %}
+                            <option value="{{ usuario.nombre }} {{ usuario.apellido }}" 
+                                    {% if proyecto.encargado and proyecto.encargado.nombre == usuario.nombre and proyecto.responsable.apellido == usuario.apellido %} selected {% endif %}>
+                                    {{ usuario.nombre }} {{ usuario.apellido }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Botones -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                    <a href="{% url 'listar_proyectos' %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
